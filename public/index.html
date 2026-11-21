@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>SwastiQ – Community health records, spoken</title>
+<script>document.documentElement.classList.add(matchMedia('(prefers-reduced-motion:reduce)').matches?'rm':'js')</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--blue:#1b4f9c;--deep:#12376f;--mint:#2bb39b;--amber:#ffb23e;--ink:#17294a;--mu:#51647f;--sky:#eef4fb;--ln:#d9e4f2;--ease:cubic-bezier(.2,.8,.2,1)}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{font:17px/1.55 'Instrument Sans',system-ui,sans-serif;color:var(--ink);background:#fff;overflow-x:hidden}
+a{color:inherit}:focus-visible{outline:3px solid var(--amber);outline-offset:3px}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;font-weight:600;letter-spacing:-.015em;line-height:1.08}
+.wrap{max-width:1200px;margin:0 auto;padding:0 clamp(18px,4vw,40px)}
+.pg{position:fixed;top:0;left:0;right:0;height:4px;z-index:60;background:linear-gradient(90deg,var(--mint),var(--amber));transform-origin:0 50%;transform:scaleX(0)}
+.util{background:var(--deep);color:#dbe7f8;font-size:14px}.util .wrap{display:flex;justify-content:space-between;gap:12px;padding-top:8px;padding-bottom:8px;flex-wrap:wrap}
+.util b{color:var(--amber);font-weight:600}
+header{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--ln);transition:transform .45s var(--ease)}
+header.hide{transform:translateY(-100%)}
+header .wrap{display:flex;align-items:center;gap:28px;height:72px}
+.logo{display:flex;gap:9px;align-items:center;font:600 24px Fraunces,serif;color:var(--blue);text-decoration:none;margin-right:auto}
+.logo svg{width:34px;height:34px}
+nav a{margin-left:26px;text-decoration:none;font-weight:500;color:var(--mu)}nav a:hover{color:var(--blue)}
+.btn{min-height:50px;padding:0 26px;border-radius:14px;display:inline-flex;align-items:center;font:600 16px 'Instrument Sans';text-decoration:none;background:var(--blue);color:#fff;border:2px solid var(--blue);transition:transform .25s var(--ease),box-shadow .25s}
+.btn:hover{box-shadow:0 12px 26px rgba(27,79,156,.28)}
+.btn.o{background:#fff;color:var(--blue)}.btn.m{background:var(--mint);border-color:var(--mint)}.btn.a{background:var(--amber);border-color:var(--amber);color:#3a2600}
+
+/* reveal system (JS only) */
+.js [data-r]{opacity:0;transform:translateY(46px) scale(.97);filter:blur(6px);transition:opacity .9s var(--ease),transform .9s var(--ease),filter .9s var(--ease);transition-delay:calc(var(--d,0)*100ms)}
+.js [data-r].in{opacity:1;transform:none;filter:none}
+.w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.14em;margin-bottom:-.14em}
+.w>span{display:inline-block;transform:translateY(112%);transition:transform 1s var(--ease);transition-delay:calc(var(--i)*70ms)}
+.in .w>span{transform:none}
+
+/* hero */
+.hero{--mx:70%;--my:40%;background:var(--sky);position:relative;overflow:hidden;padding:clamp(40px,7vw,90px) 0 150px}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(520px circle at var(--mx) var(--my),rgba(43,179,155,.2),transparent 62%);pointer-events:none}
+.hero .wrap{display:grid;grid-template-columns:1.05fr 1fr;gap:30px;align-items:center;position:relative}
+.hero h1{font-size:clamp(40px,5.6vw,78px);max-width:13ch}
+.hero p.lead{margin:22px 0 32px;color:var(--mu);font-size:19px;max-width:46ch}
+.row{display:flex;gap:12px;flex-wrap:wrap}
+.trust{margin-top:34px;display:flex;gap:22px;flex-wrap:wrap;font-size:15px;color:var(--mu)}
+.trust span{display:flex;gap:8px;align-items:center}.trust i{width:10px;height:10px;border-radius:50%;background:var(--mint)}
+.wave{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:90px;display:block}
+.cue{position:absolute;left:50%;bottom:104px;width:26px;height:42px;margin-left:-13px;border:2px solid var(--blue);border-radius:14px;opacity:.55;z-index:2}
+.cue::after{content:"";position:absolute;left:50%;top:7px;width:4px;height:8px;margin-left:-2px;border-radius:2px;background:var(--blue);animation:cue 1.8s var(--ease) infinite}
+@keyframes cue{0%{transform:translateY(0);opacity:1}80%,100%{transform:translateY(14px);opacity:0}}
+
+/* 3D phone */
+.scene{height:min(74vh,580px);perspective:1300px;display:grid;place-items:center;position:relative;will-change:transform}
+.rig,.rig2{position:relative;width:260px;height:520px;transform-style:preserve-3d;will-change:transform}
+.phone,.phone::before,.phone::after{position:absolute;inset:0;border-radius:40px;background:var(--blue)}
+.phone{padding:11px;box-shadow:0 50px 70px rgba(18,55,111,.3);transform-style:preserve-3d}
+.phone::before{content:"";transform:translateZ(-9px);background:var(--deep)}.phone::after{content:"";transform:translateZ(-18px);background:#0e2c59}
+.screen{position:relative;width:100%;height:100%;border-radius:30px;background:#fff;padding:20px 16px;overflow:hidden;display:flex;flex-direction:column;gap:12px}
+.screen.ps{padding:0;display:block}
+.screen h4{font:600 15px Fraunces,serif;color:var(--blue)}
+.mic{width:78px;height:78px;border-radius:50%;background:var(--mint);margin:6px auto 0;display:grid;place-items:center;position:relative}
+.mic svg{width:34px;color:#fff}.mic::after{content:"";position:absolute;inset:-8px;border:3px solid var(--mint);border-radius:50%;animation:pu 1.6s infinite}
+@keyframes pu{to{transform:scale(1.35);opacity:0}}
+.bars{display:flex;gap:4px;justify-content:center;align-items:center;height:42px}.bars i{width:5px;border-radius:3px;background:var(--blue);animation:b 1s ease-in-out infinite}
+@keyframes b{50%{height:36px}}
+.tx{font:italic 500 14px/1.4 Fraunces,serif;color:var(--mu);text-align:center}
+.caret{display:inline-block;width:2px;height:1em;background:var(--blue);vertical-align:-2px;margin-left:2px;animation:bl 1s steps(1) infinite}@keyframes bl{50%{opacity:0}}
+.mini{margin-top:auto;border:1px solid var(--ln);border-radius:14px;padding:12px;font-size:13px;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}.mini dt{color:var(--mu)}.mini dd{font-weight:600;margin:0}
+.fl{position:absolute;padding:13px 16px;border-radius:16px;background:#fff;box-shadow:0 24px 40px rgba(18,55,111,.2);font-size:14px;font-weight:500;display:flex;gap:10px;align-items:center;white-space:nowrap}
+.fl b{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;color:#fff;flex:none}.fl svg{width:19px}
+.f1{left:-150px;top:70px;transform:translateZ(120px)}.f2{right:-130px;top:230px;transform:translateZ(170px)}.f3{left:-110px;bottom:60px;transform:translateZ(90px)}
+.disc{position:absolute;border-radius:50%;transform:translateZ(-90px)}.d1{width:360px;height:360px;background:var(--mint);opacity:.22;left:-50px;top:80px}.d2{width:150px;height:150px;background:var(--amber);opacity:.55;right:-90px;top:-20px;transform:translateZ(-50px)}
+.floor{position:absolute;bottom:2%;width:300px;height:36px;border-radius:50%;background:radial-gradient(rgba(18,55,111,.28),transparent 70%)}
+
+/* quick actions */
+.qa{margin-top:-96px;position:relative;z-index:5;display:grid;grid-template-columns:repeat(4,1fr);gap:18px;perspective:1000px}
+.qa>div{display:flex}
+.q{position:relative;display:block;width:100%;text-decoration:none;background:#fff;border:1px solid var(--ln);border-radius:20px;padding:26px 22px 24px;box-shadow:0 18px 40px rgba(18,55,111,.12);transform:rotateX(var(--rx,0)) rotateY(var(--ry,0));transition:transform .2s,box-shadow .2s;overflow:hidden}
+.q:hover{box-shadow:0 30px 56px rgba(18,55,111,.22)}
+.q::after{content:"";position:absolute;inset:0;background:radial-gradient(220px circle at var(--gx,50%) var(--gy,0%),rgba(255,255,255,.9),transparent 60%);opacity:0;transition:opacity .2s;pointer-events:none;mix-blend-mode:soft-light}.q:hover::after{opacity:1}
+.ic{width:52px;height:52px;border-radius:15px;display:grid;place-items:center;color:#fff;margin-bottom:18px}.ic svg{width:26px}
+.q h3{font-size:21px;margin-bottom:6px}.q p{color:var(--mu);font-size:15px}.q span{display:inline-block;margin-top:14px;font-weight:600;color:var(--blue)}
+
+section{padding:clamp(60px,9vw,110px) 0}
+.sec h2{font-size:clamp(32px,4.4vw,54px);max-width:18ch}.sec>.wrap>p{margin-top:14px;color:var(--mu);max-width:54ch}
+
+/* statement (scroll-scrubbed words) */
+.say{padding:clamp(90px,14vw,180px) 0}
+.say p{font:600 clamp(30px,5vw,64px)/1.14 Fraunces,Georgia,serif;letter-spacing:-.015em;max-width:30ch}
+.sw{color:#c4d1e6;transition:color .4s}.sw.on{color:var(--ink)}
+
+/* story: pinned cinematic sequence */
+.story{padding:clamp(60px,9vw,110px) 0 0}
+.story .intro{padding-bottom:30px}
+.steps-static{display:grid;margin-top:40px;grid-template-columns:repeat(4,1fr);gap:20px}
+html.js .steps-static{display:none}
+.st{background:var(--sky);border-radius:22px;padding:26px 22px 30px}
+.st b{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:var(--blue);color:#fff;font:600 20px Fraunces,serif;margin-bottom:40px}
+.st h3{font-size:23px;margin-bottom:8px}.st p{color:var(--mu);font-size:16px}
+.track{display:none;height:520vh;position:relative}
+html.js .track{display:block}
+.stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;display:flex;padding-top:72px;background:var(--sky)}
+.sbg{position:absolute;inset:0;opacity:0}
+.sb1{background:radial-gradient(900px circle at 75% 45%,#d6ecfb,var(--sky) 62%)}
+.sb2{background:radial-gradient(900px circle at 75% 45%,#c6efe5,#eaf8f5 62%)}
+.sb3{background:radial-gradient(900px circle at 75% 45%,#ffe5b0,#fff6e4 62%)}
+.sb4{background:radial-gradient(900px circle at 75% 45%,#cddffa,#e9f0fc 62%)}
+.sgrid{position:relative;flex:1;align-self:stretch;display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:center}
+.left{display:flex;flex-direction:column;gap:34px}
+.caps{position:relative;height:290px}
+.cap{position:absolute;inset:0;will-change:transform,opacity}
+.cap .num{display:block;margin-bottom:14px;font:600 15px 'Instrument Sans';letter-spacing:.14em;color:var(--blue)}
+.cap h2{font-size:clamp(46px,6.4vw,92px);margin-bottom:14px}
+.cap p{color:var(--mu);font-size:19px;max-width:34ch}
+.rail{display:flex;gap:10px;list-style:none;padding:0}
+.pill{position:relative;overflow:hidden;min-height:44px;padding:10px 18px;border:1px solid var(--ln);border-radius:99px;background:rgba(255,255,255,.75);font:600 15px 'Instrument Sans';color:var(--mu);cursor:pointer}
+.pill::before{content:"";position:absolute;left:0;top:0;bottom:0;width:calc(var(--f,0)*100%);background:rgba(43,179,155,.24)}
+.pill span{position:relative}.pill.act{color:var(--ink);border-color:var(--mint)}
+.pscene{position:relative;height:100%}
+.pwrap{position:absolute;left:50%;top:50%;width:260px;height:520px;margin:-260px 0 0 -130px;perspective:1300px;transform:scale(var(--ps,1))}
+.scr{position:absolute;inset:0;padding:20px 16px;display:flex;flex-direction:column;gap:12px;opacity:0;pointer-events:none;will-change:transform,opacity}
+.rows{display:grid;gap:9px}
+.rw{display:flex;justify-content:space-between;align-items:center;padding:12px 13px;border:1px solid var(--ln);border-radius:13px;font-size:14px;opacity:0;transform:translateX(22px);transition:.5s var(--ease)}
+.rw.on{opacity:1;transform:none}.rw span{color:var(--mu)}
+.wt{display:inline-grid}.wt s,.wt em{grid-area:1/1;text-align:right;font-style:normal;font-weight:600;transition:.45s var(--ease)}
+.wt s{color:#b24a3a}.wt em{opacity:0;transform:translateY(10px);color:#157a68}
+.rw.fix{border-color:var(--mint);background:#effaf7}.rw.fix .wt s{opacity:0;transform:translateY(-10px)}.rw.fix .wt em{opacity:1;transform:none}
+.bub{align-self:center;margin-top:auto;background:var(--sky);border-radius:99px;padding:9px 14px;font:italic 500 13px Fraunces,serif;color:var(--mu);opacity:0;transform:translateY(14px);transition:.5s var(--ease)}.bub.on{opacity:1;transform:none}
+.spk{width:78px;height:78px;border-radius:50%;background:var(--blue);display:grid;place-items:center;margin:8px auto 0;position:relative;color:#fff}.spk svg{width:34px}
+.spk::before,.spk::after{content:"";position:absolute;inset:-8px;border:3px solid var(--blue);border-radius:50%;animation:pu 1.8s infinite}.spk::after{animation-delay:.9s}
+.rb{transition:opacity .5s}.scr.done .rb{opacity:.15}
+.hint{margin-top:auto;text-align:center;background:var(--sky);border-radius:99px;padding:10px;font-size:13px;font-weight:600;color:var(--blue)}
+.ok{position:absolute;left:0;right:0;top:38%;display:grid;justify-items:center;gap:10px;opacity:0;transform:scale(.7);transition:.55s cubic-bezier(.2,1.4,.4,1)}.scr.done .ok{opacity:1;transform:none}
+.ok i{width:92px;height:92px;border-radius:50%;background:var(--mint);display:grid;place-items:center}.ok svg{width:46px}
+.ok path{stroke-dasharray:30;stroke-dashoffset:30;transition:stroke-dashoffset .5s .25s}.scr.done .ok path{stroke-dashoffset:0}
+.ok b{font:600 17px Fraunces,serif}
+.cd{display:flex;gap:12px;align-items:center;border:1px solid var(--ln);border-radius:14px;padding:12px;font-size:13px;opacity:0;transform:translateY(18px);transition:.55s var(--ease)}.cd.on{opacity:1;transform:none}
+.cd small{display:block;color:var(--mu);font-size:12px}.cd b{font-size:14px}
+.dt{flex:none;width:46px;height:50px;border-radius:11px;background:var(--blue);color:#fff;display:grid;place-items:center;text-align:center;font:600 18px/1 Fraunces,serif}.dt small{color:#cfe0f7;font:600 10px 'Instrument Sans';letter-spacing:.08em}
+.cd.al{background:#fff3de;border-color:var(--amber)}.cd.al svg{width:30px;flex:none}
+
+/* band: expands from a card to full bleed */
+.bands{padding:0;overflow:hidden;background:linear-gradient(#fff 50%,var(--sky) 50%)}
+.bin{background:var(--blue);color:#fff;padding:clamp(60px,9vw,110px) 0;transform-origin:50% 50%;will-change:transform}
+.bin .wrap{display:grid;grid-template-columns:repeat(3,1fr);gap:30px}
+.bin b{display:block;font:600 clamp(40px,5vw,64px) Fraunces,serif;color:var(--amber);line-height:1}.bin p{margin-top:10px;color:#d4e2f7;max-width:28ch}
+
+/* languages marquee */
+.lang{background:var(--sky);overflow:hidden}
+.mq{margin-top:34px}.mq+.mq{margin-top:14px}
+.mqt{display:flex;width:max-content;will-change:transform}
+.mq span{flex:none;margin-right:12px;padding:14px 26px;background:#fff;border:1px solid var(--ln);border-radius:99px;font-size:22px;font-weight:500;box-shadow:0 8px 18px rgba(18,55,111,.07);transition:transform .25s,background .25s,color .25s}
+.mq span:hover{transform:translateY(-6px) rotate(-2deg);background:var(--blue);color:#fff}
+.mq.g span{background:transparent;box-shadow:none;border-color:transparent;color:var(--blue);font:600 clamp(30px,4vw,48px) Fraunces,serif;padding:6px 18px}
+.mq.g span:hover{background:transparent;color:var(--mint)}
+html.rm .mqt,html:not(.js) .mqt{width:auto;flex-wrap:wrap;row-gap:12px}
+
+/* CTA: circle reveal */
+.cta{position:relative;overflow:hidden;background:var(--sky);text-align:center;color:#fff}
+.cta-bg{position:absolute;inset:0;background:var(--mint);clip-path:circle(0% at 50% 62%)}
+html.rm .cta-bg,html:not(.js) .cta-bg{clip-path:none}
+.cta-in{position:relative}.js .cta-in{opacity:0}
+.cta h2{font-size:clamp(32px,4.6vw,58px);margin:0 auto 26px;max-width:18ch}
+footer{background:var(--deep);color:#c5d6ee;padding:34px 0;font-size:15px}footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+@media(max-width:900px){
+ .hero .wrap{grid-template-columns:1fr}.scene{height:520px}.qa{grid-template-columns:1fr 1fr}.steps-static{grid-template-columns:1fr 1fr}.bin .wrap{grid-template-columns:1fr}nav{display:none}
+ .f1{left:-70px}.f2{right:-60px}.f3{left:-50px}.cue{display:none}
+ .track{height:470vh}
+ .sgrid{grid-template-columns:1fr;grid-template-rows:auto 1fr;gap:0;align-items:start;padding-top:12px}
+ .left{gap:14px}.caps{height:168px}.cap h2{font-size:44px;margin-bottom:8px}.cap p{font-size:16px}.cap .num{margin-bottom:6px}
+ .pwrap{--ps:.7}.pill{padding:8px 13px;min-height:40px;font-size:14px}.rail{flex-wrap:wrap}.stage .fl{display:none}
+}
+@media(max-width:520px){.qa,.steps-static{grid-template-columns:1fr}.util span:last-child{display:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01s!important}}
+
+/* door: tap to open, then choose a language */
+.dr{margin-top:40px;text-align:center;perspective:1000px}
+.dframe{position:relative;width:min(52vw,190px);height:min(76vw,280px);margin:0 auto;border:9px solid var(--deep);border-bottom:0;border-radius:110px 110px 0 0;background:radial-gradient(circle at 50% 80%,#fff,#bff0e4 45%,var(--mint));transition:box-shadow .9s}
+.dr.open .dframe{box-shadow:0 0 80px rgba(43,179,155,.55)}
+.ddoor{position:absolute;inset:0;border:0;border-radius:100px 100px 0 0;background:linear-gradient(135deg,var(--blue),var(--deep));cursor:pointer;transform-origin:left center;transition:transform 1s var(--ease)}
+.dr.open .ddoor{transform:rotateY(-112deg)}
+.ddoor::before{content:"";position:absolute;left:18%;right:18%;top:14%;height:38%;border-radius:70px 70px 6px 6px;border:3px solid rgba(255,255,255,.25)}
+.ddoor::after{content:"";position:absolute;right:13%;top:55%;width:16px;height:16px;border-radius:50%;background:var(--amber);box-shadow:0 0 12px var(--amber)}
+.ddoor:hover{filter:brightness(1.12)}
+.dhint{margin-top:18px;color:var(--mu);font-weight:600}
+.dl{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:22px auto 0;max-width:760px;animation:din .6s var(--ease) both}
+.dl[hidden],.dgo[hidden]{display:none}
+@keyframes din{from{opacity:0;transform:translateY(16px)}}
+.dl button{min-height:56px;padding:8px 22px;border-radius:99px;border:1px solid var(--ln);background:#fff;font:500 20px 'Instrument Sans',system-ui;color:var(--ink);cursor:pointer;box-shadow:0 8px 18px rgba(18,55,111,.07);display:grid;line-height:1.2}
+.dl button small{font-size:12px;color:var(--mu)}
+.dl button:hover,.dl button.on{background:var(--blue);color:#fff;border-color:var(--blue)}.dl button:hover small,.dl button.on small{color:#cfe0f7}
+.dgo{margin-top:22px;animation:din .5s var(--ease) both}
+@media(prefers-reduced-motion:reduce){.ddoor,.dframe{transition-duration:.01s}.dl,.dgo{animation:none}}
+</style></head>
+<body>
+<div class="pg" aria-hidden="true"></div>
+<div class="util"><div class="wrap"><span>Made for ASHA workers and community health teams</span><span>Danger sign reported? <b>Refer to the PHC immediately.</b></span></div></div>
+<header><div class="wrap"><a class="logo" href="#top"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><circle cx="20" cy="20" r="16" opacity=".35"/><path d="M8 20h4l3-8 5 16 4-12 2 4h6"/></svg>SwastiQ</a><nav><a href="#features">Features</a><a href="#how">How it works</a><a href="#languages">Languages</a></nav><a class="btn" data-mag href="app.html">Open the app</a></div></header>
+<main id="top">
+<section class="hero" id="hero"><div class="wrap">
+ <div id="heroTxt"><h1 data-split>Community health records, spoken.</h1><p class="lead" data-r style="--d:5">An ASHA worker says what happened on the visit. SwastiQ writes the record, reads it back, and saves it only after she confirms.</p>
+ <div class="row" data-r style="--d:6"><a class="btn m" data-mag href="app.html#voice">Try the voice assistant</a><a class="btn o" data-mag href="#how">See how it works</a></div>
+ <div class="trust" data-r style="--d:7"><span><i></i>Nine Indian languages</span><span><i style="background:var(--amber)"></i>Danger signs flagged by fixed rules</span></div></div>
+ <div class="scene" id="scene"><div class="floor"></div><div class="rig" id="rig">
+  <div class="disc d1"></div><div class="disc d2"></div>
+  <div class="phone"><div class="screen"><h4>Record a visit</h4><div class="mic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3zM5 11a7 7 0 0 0 14 0M12 18v3"/></svg></div>
+   <div class="bars" aria-hidden="true"></div><p class="tx">“Beneficiary 102, weight 48 kilograms, next visit December 5.”</p>
+   <dl class="mini"><dt>ID</dt><dd>102</dd><dt>Weight</dt><dd>48 kg</dd><dt>Next visit</dt><dd>5 Dec</dd></dl></div></div>
+  <div class="fl f1"><b style="background:var(--mint)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></b>Record saved</div>
+  <div class="fl f2"><b style="background:var(--amber)"><svg viewBox="0 0 24 24" fill="none" stroke="#3a2600" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l10 18H2zM12 10v4M12 17.5v.5"/></svg></b>Danger sign flagged</div>
+  <div class="fl f3"><b style="background:var(--blue)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16v14H4zM4 10h16M8 3v4M16 3v4"/></svg></b>Follow-up due today</div>
+ </div></div></div>
+ <a class="cue" href="#features" aria-label="Scroll down"></a>
+ <svg class="wave" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true"><path d="M0 50C240 100 480 0 720 40S1200 90 1440 30V90H0z" fill="#fff"/></svg>
+</section>
+
+<div class="wrap" id="features"><div class="qa">
+ <div data-r style="--d:0"><a class="q" href="app.html#voice"><div class="ic" style="background:var(--mint)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3zM5 11a7 7 0 0 0 14 0M12 18v3"/></svg></div><h3>Record by voice</h3><p>Speak the visit in your own language.</p><span>Start a visit</span></a></div>
+ <div data-r style="--d:1"><a class="q" href="app.html#fu"><div class="ic" style="background:var(--blue)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16v14H4zM4 10h16M8 3v4M16 3v4"/></svg></div><h3>Follow-ups</h3><p>See what is due today and what is overdue.</p><span>Open tracker</span></a></div>
+ <div data-r style="--d:2"><a class="q" href="app.html#alerts"><div class="ic" style="background:var(--amber);color:#3a2600"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l10 18H2zM12 10v4M12 17.5v.5"/></svg></div><h3>Danger signs</h3><p>Fixed rules raise a clear referral alert.</p><span>View alerts</span></a></div>
+ <div data-r style="--d:3"><a class="q" href="app.html#reg"><div class="ic" style="background:var(--blue)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 3h12a2 2 0 0 1 2 2v16H7a2 2 0 0 1-2-2zM9 8h6M9 12h6M9 16h4"/></svg></div><h3>Field register</h3><p>Searchable records with an audit trail.</p><span>Open register</span></a></div>
+</div></div>
+
+<section class="say" id="say"><div class="wrap"><p id="sayTxt">Every visit, every village, every record. Spoken once, checked by her, and saved only on her word.</p></div></section>
+
+<section class="story sec" id="how">
+ <div class="wrap intro"><h2 data-split>From a spoken visit to a checked record.</h2><p data-r style="--d:3">Four steps, and nothing is saved until the worker says yes. Scroll to watch one visit go through.</p>
+  <div class="steps-static"><div class="st"><b>1</b><h3>Speak</h3><p>Tap the microphone and describe the visit.</p></div><div class="st"><b>2</b><h3>Check</h3><p>Review the record card and correct any field by voice.</p></div><div class="st"><b>3</b><h3>Confirm</h3><p>SwastiQ reads the record back. You confirm, then it saves.</p></div><div class="st"><b>4</b><h3>Follow up</h3><p>The next visit appears in your tracker automatically.</p></div></div>
+ </div>
+ <div class="track" id="track"><div class="stage" id="stage">
+  <div class="sbg sb1"></div><div class="sbg sb2"></div><div class="sbg sb3"></div><div class="sbg sb4"></div>
+  <div class="wrap sgrid">
+   <div class="left">
+    <div class="caps">
+     <article class="cap"><span class="num">01 / 04</span><h2>Speak</h2><p>Tap the microphone and describe the visit, in your own language.</p></article>
+     <article class="cap"><span class="num">02 / 04</span><h2>Check</h2><p>Review the record card. Heard something wrong? Correct that one field by voice.</p></article>
+     <article class="cap"><span class="num">03 / 04</span><h2>Confirm</h2><p>SwastiQ reads the record back aloud. Nothing is saved until you say yes.</p></article>
+     <article class="cap"><span class="num">04 / 04</span><h2>Follow up</h2><p>The next visit lands in your tracker, and fixed rules raise any danger sign for referral.</p></article>
+    </div>
+    <ul class="rail"><li><button class="pill" type="button"><span>Speak</span></button></li><li><button class="pill" type="button"><span>Check</span></button></li><li><button class="pill" type="button"><span>Confirm</span></button></li><li><button class="pill" type="button"><span>Follow up</span></button></li></ul>
+   </div>
+   <div class="pscene"><div class="pwrap"><div class="rig2" id="rig2">
+    <div class="disc d1"></div><div class="disc d2"></div>
+    <div class="phone"><div class="screen ps">
+     <div class="scr"><h4>Record a visit</h4><div class="mic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3zM5 11a7 7 0 0 0 14 0M12 18v3"/></svg></div><div class="bars" aria-hidden="true"></div><p class="tx" style="min-height:90px">“<span id="typed"></span><i class="caret"></i>”</p></div>
+     <div class="scr"><h4>Check the record</h4><div class="rows"><div class="rw"><span>Beneficiary ID</span><b>102</b></div><div class="rw"><span>Weight</span><b class="wt"><s>84 kg</s><em>48 kg</em></b></div><div class="rw"><span>Next visit</span><b>5 Dec</b></div></div><div class="bub" id="bub">“No, weight 48 kilograms.”</div></div>
+     <div class="scr" id="s3"><h4>Read back</h4><div class="rb"><div class="spk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9zM16 8a5 5 0 0 1 0 8M19 5a9 9 0 0 1 0 14"/></svg></div><p class="tx" style="margin-top:20px">“Beneficiary 102, weight 48 kilograms, next visit December 5. Save this record?”</p></div><div class="hint rb">Say “Yes” to save</div>
+      <div class="ok"><i><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></i><b>Record saved</b></div></div>
+     <div class="scr"><h4>Follow-ups</h4><div class="cd" id="fuc"><div class="dt"><div>5<br><small>DEC</small></div></div><div><small>Next visit</small><b>Beneficiary 102</b></div></div>
+      <div class="cd al" id="al"><svg viewBox="0 0 24 24" fill="none" stroke="#3a2600" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l10 18H2zM12 10v4M12 17.5v.5"/></svg><div><small>Raised by a fixed rule</small><b>Danger sign: refer to the PHC immediately</b></div></div></div>
+    </div></div>
+    <div class="fl f1" id="cA" style="opacity:0"><b style="background:var(--mint)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></b>Record saved</div>
+    <div class="fl f2" id="cB" style="opacity:0"><b style="background:var(--amber)"><svg viewBox="0 0 24 24" fill="none" stroke="#3a2600" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l10 18H2zM12 10v4M12 17.5v.5"/></svg></b>Danger sign flagged</div>
+    <div class="fl f3" id="cC" style="opacity:0"><b style="background:var(--blue)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16v14H4zM4 10h16M8 3v4M16 3v4"/></svg></b>Follow-up due today</div>
+   </div></div></div>
+  </div>
+ </div></div>
+</section>
+
+<section class="bands" id="bands"><div class="bin" id="bin"><div class="wrap"><div><b data-count="9">9</b><p>languages understood, even when mixed in one sentence</p></div><div><b data-count="1">1</b><p>confirmation before any record is saved</p></div><div><b data-count="100" data-suf="%">100%</b><p>of danger-sign alerts come from fixed rules, not AI guesses</p></div></div></div></section>
+
+<section class="sec lang" id="languages"><div class="wrap"><h2 data-split>Speak the way you speak.</h2><p data-r style="--d:3">Voice recognition by Gnani Prisma. The read-back is spoken by Gnani Timbre.</p></div>
+ <div class="dr" id="door"><div class="dframe"><button type="button" class="ddoor" id="dbtn" aria-expanded="false" aria-controls="dlangs" aria-label="Open the door to choose your language"></button></div><p class="dhint" id="dhint" aria-live="polite">Tap the door to choose your language</p><div class="dl" id="dlangs" role="group" aria-label="Choose your language" hidden></div><div class="dgo" id="dgo" hidden><a class="btn m" href="app.html#voice">Open the app</a></div></div>
+</section>
+
+<section class="cta" id="cta"><div class="cta-bg" id="ctaBg"></div><div class="wrap cta-in" id="ctaIn"><h2>Ready to record your first visit?</h2><a class="btn a" data-mag href="app.html#voice">Start a voice visit</a></div></section>
+</main>
+<footer><div class="wrap"><span>SwastiQ. Voice-first community health register.</span><span>Alerts follow fixed rules. SwastiQ does not diagnose or advise treatment.</span></div></footer>
+
+<script>
+(()=>{
+const root=document.documentElement,rm=root.classList.contains('rm');
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v)),ease=t=>t*t*(3-2*t);
+const hero=$('#hero'),rig=$('#rig');
+$$('.bars').forEach(bars=>{for(let i=0;i<15;i++){const b=document.createElement('i');b.style.height=(10+Math.abs(Math.sin(i))*20)+'px';b.style.animationDelay=(i*.08)+'s';bars.appendChild(b)}});
+
+/* card tilt */
+$$('.q').forEach(c=>{c.addEventListener('pointermove',e=>{if(rm)return;const r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;c.style.setProperty('--ry',(x-.5)*12+'deg');c.style.setProperty('--rx',(.5-y)*12+'deg');c.style.setProperty('--gx',x*100+'%');c.style.setProperty('--gy',y*100+'%')});c.addEventListener('pointerleave',()=>{c.style.setProperty('--rx','0deg');c.style.setProperty('--ry','0deg')})});
+
+if(rm){rig.style.transform='rotateY(-18deg) rotateX(6deg)';return}
+
+/* split headings into masked words */
+$$('[data-split]').forEach(el=>{const t=el.textContent.trim();el.setAttribute('aria-label',t);el.innerHTML=t.split(/\s+/).map((w,i)=>`<span class="w" aria-hidden="true" style="--i:${i}"><span>${w}</span></span>`).join(' ')});
+const sayEl=$('#sayTxt');sayEl.innerHTML=sayEl.textContent.trim().split(/\s+/).map(w=>`<span class="sw">${w}</span>`).join(' ');
+const sw=$$('.sw');
+
+/* reveal on enter */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.18,rootMargin:'0px 0px -6% 0px'});
+$$('[data-r],[data-split]').forEach(el=>io.observe(el));
+
+/* count-up */
+const co=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;co.unobserve(e.target);const el=e.target,end=+el.dataset.count,suf=el.dataset.suf||'',t0=performance.now();(function s(n){const k=clamp((n-t0)/1500);el.textContent=Math.round(end*(1-Math.pow(1-k,3)))+suf;if(k<1)requestAnimationFrame(s)})(t0)}),{threshold:.6});
+$$('[data-count]').forEach(el=>{el.textContent='0'+(el.dataset.suf||'');co.observe(el)});
+
+/* marquee: duplicate content for seamless loop */
+const mqs=$$('.mqt');mqs.forEach(m=>{m.innerHTML+=m.innerHTML});
+
+/* pointer: hero tilt, spotlight, magnetic buttons */
+let tx=0,ty=0,cx=0,cy=0;
+addEventListener('pointermove',e=>{tx=e.clientX/innerWidth-.5;ty=e.clientY/innerHeight-.5});
+hero.addEventListener('pointermove',e=>{const r=hero.getBoundingClientRect();hero.style.setProperty('--mx',(e.clientX-r.left)+'px');hero.style.setProperty('--my',(e.clientY-r.top)+'px')});
+$$('[data-mag]').forEach(b=>{b.addEventListener('pointermove',e=>{const r=b.getBoundingClientRect();b.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.22}px,${(e.clientY-r.top-r.height/2)*.32}px)`});b.addEventListener('pointerleave',()=>{b.style.transform=''})});
+
+/* elements */
+const heroTxt=$('#heroTxt'),scene=$('#scene'),pg=$('.pg'),hdr=$('header'),track=$('#track'),sayS=$('#say'),bandS=$('#bands'),bin=$('#bin'),ctaS=$('#cta'),ctaBg=$('#ctaBg'),ctaIn=$('#ctaIn');
+const caps=$$('.cap'),scrs=$$('.scr'),sbgs=$$('.sbg'),pills=$$('.pill'),rig2=$('#rig2'),chips=[$('#cA'),$('#cB'),$('#cC')];
+const typed=$('#typed'),TXT='Beneficiary 102, weight 48 kilograms, next visit December 5.',rows=$$('.rw'),bub=$('#bub'),s3=$('#s3'),al=$('#al'),fuc=$('#fuc');
+
+/* measurements */
+let VH,docH,tTop,tH,sayTop,sayH,bandTop,ctaTop,half=[1,1];
+const abs=el=>el.getBoundingClientRect().top+scrollY;
+function measure(){VH=innerHeight;docH=root.scrollHeight;tTop=abs(track);tH=track.offsetHeight;sayTop=abs(sayS);sayH=sayS.offsetHeight;bandTop=abs(bandS);ctaTop=abs(ctaS);half=mqs.map(m=>m.scrollWidth/2||1)}
+measure();addEventListener('resize',measure);addEventListener('load',measure);if(document.fonts)document.fonts.ready.then(measure);
+
+pills.forEach((p,i)=>p.addEventListener('click',()=>scrollTo({top:tTop+((i+.7)/4)*(tH-VH),behavior:'smooth'})));
+
+const dd=(f,i)=>{let d=f-(i+.5);if(i===0&&d<0)d=0;if(i===3&&d>0)d=0;return d};
+const vis=d=>clamp(1-(Math.abs(d)-.26)/.3);
+let ss=scrollY,last=scrollY,lastN=-1;
+
+function frame(t){
+ ss+=(scrollY-ss)*.11;if(Math.abs(scrollY-ss)<.1)ss=scrollY;
+ const vel=scrollY-ss;cx+=(tx-cx)*.07;cy+=(ty-cy)*.07;
+ pg.style.transform=`scaleX(${clamp(scrollY/Math.max(1,docH-VH))})`;
+ const dl=scrollY-last;if(scrollY>240&&dl>1)hdr.classList.add('hide');else if(dl<-1||scrollY<240)hdr.classList.remove('hide');last=scrollY;
+
+ /* hero */
+ const hh=clamp(ss/hero.offsetHeight);
+ heroTxt.style.transform=`translate3d(0,${ss*.2}px,0)`;heroTxt.style.opacity=clamp(1-hh*1.5);
+ scene.style.transform=`translate3d(0,${ss*.08}px,0) scale(${1-hh*.1})`;
+ rig.style.transform=`rotateY(${-22+cx*26+ss*.04}deg) rotateX(${8-cy*14}deg)`;
+
+ /* statement */
+ const sp2=clamp((VH*.85-(sayTop-ss))/(sayH+VH*.1)),nl=sp2*sw.length;
+ for(let i=0;i<sw.length;i++)sw[i].classList.toggle('on',i<nl);
+
+ /* pinned story */
+ if(ss>tTop-VH&&ss<tTop+tH+VH){
+  const sp=clamp((ss-tTop)/(tH-VH)),f=sp*4,lp=i=>clamp(f-i+(i?.25:0));
+  caps.forEach((c,i)=>{const d=dd(f,i),o=vis(d);c.style.opacity=o;c.style.transform=`translate3d(0,${-d*80}px,0)`;c.style.filter=o<1?`blur(${(1-o)*10}px)`:'none';c.style.visibility=o>.01?'visible':'hidden'});
+  scrs.forEach((c,i)=>{const d=dd(f,i),o=vis(d);c.style.opacity=o;c.style.transform=`translate3d(0,${-d*50}px,0) scale(${1-Math.abs(d)*.1})`});
+  sbgs.forEach((b,i)=>{b.style.opacity=vis(dd(f,i))});
+  const n=Math.floor(clamp(lp(0)/.75)*TXT.length);if(n!==lastN){typed.textContent=TXT.slice(0,n);lastN=n}
+  const l1=lp(1);rows.forEach((r,k)=>r.classList.toggle('on',l1>.08+k*.14));rows[1].classList.toggle('fix',l1>.62);bub.classList.toggle('on',l1>.45);
+  s3.classList.toggle('done',lp(2)>.55);
+  fuc.classList.toggle('on',lp(3)>.1);al.classList.toggle('on',lp(3)>.38);
+  const win=(a,b,w)=>clamp(Math.min((f-a)/w,(b-f)/w));
+  [win(2.55,3.55,.25),win(3.4,9,.3),win(3.55,9,.3)].forEach((o,i)=>{chips[i].style.opacity=o;chips[i].style.translate=`0 ${(1-o)*26}px`});
+  rig2.style.transform=`rotateY(${-28+sp*56+cx*8}deg) rotateX(${8-cy*8-sp*4}deg)`;
+  pills.forEach((p,i)=>{p.style.setProperty('--f',clamp(f-i));p.classList.toggle('act',Math.floor(Math.min(f,3.999))===i)});
+ }
+
+ /* band expands to full bleed */
+ const bp=ease(clamp((VH-(bandTop-ss))/(VH*.75)));
+ bin.style.transform=`scale(${.84+.16*bp})`;bin.style.borderRadius=(1-bp)*56+'px';
+
+ /* marquee, pushed by scroll and skewed by velocity */
+ const sk=clamp(-vel*.1,-9,9);
+ mqs.forEach((m,i)=>{const h=half[i],off=(ss*.5+t*.03)%h;m.style.transform=`translate3d(${i?off-h:-off}px,0,0) skewX(${sk}deg)`});
+
+ /* CTA circle reveal */
+ const cp=clamp((VH*.95-(ctaTop-ss))/(VH*.6));
+ ctaBg.style.clipPath=`circle(${ease(cp)*150}% at 50% 62%)`;
+ const co2=clamp((cp-.35)/.4);ctaIn.style.opacity=co2;ctaIn.style.transform=`translate3d(0,${(1-co2)*40}px,0)`;
+
+ requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+})();
+</script><script>
+(()=>{const d=document.getElementById('door'),b=document.getElementById('dbtn'),L=document.getElementById('dlangs'),go=document.getElementById('dgo'),h=document.getElementById('dhint');
+const N={'Auto Detect':'Any language',Tamil:'தமிழ்',Hindi:'हिन्दी',Telugu:'తెలుగు',Kannada:'ಕನ್ನಡ',Malayalam:'മലയാളം',Bengali:'বাংলা',Marathi:'मराठी',Gujarati:'ગુજરાતી',English:'English'};
+L.innerHTML=Object.keys(N).map(l=>'<button type="button" data-l="'+l+'">'+N[l]+'<small>'+l+'</small></button>').join('');
+b.onclick=()=>{d.classList.add('open');b.setAttribute('aria-expanded','true');h.textContent='Choose your language';setTimeout(()=>{L.hidden=false;L.querySelector('button').focus({preventScroll:true})},700)};
+L.onclick=e=>{const x=e.target.closest('button');if(!x)return;[...L.children].forEach(c=>c.classList.toggle('on',c===x));try{localStorage.setItem('sqLang',x.dataset.l)}catch(_){}h.textContent='Language set to '+x.dataset.l+'. You can change it any time in the app.';go.hidden=false};
+})();
+</script>
+</body></html>
